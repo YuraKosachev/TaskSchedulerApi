@@ -1,0 +1,30 @@
+version: '3.4'
+networks:
+  taskschedulerapp:
+services:
+  sqldb:
+    container_name: task-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=P@ssw0rd54321
+    networks:
+      - taskschedulerapp
+  taskscheduler:
+    image: ${DOCKER_REGISTRY-}taskscheduler
+    build:
+      context: .
+      dockerfile: TaskScheduler/Dockerfile
+    ports:
+      - 8001:8081
+      - 8000:8080
+    depends_on:
+      - sqldb
+    environment:
+      - DB_HOST=sqldb
+      - DB_NAME=TaskDb
+      - DB_SA_PASSWORD=P@ssw0rd54321
+    networks:
+      - taskschedulerapp
