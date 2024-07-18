@@ -1,3 +1,3 @@
 ### Task Scheduler
 
-clone repository and run from Visual Studio 
+clone repository and run from Visual Studio docker-compose
